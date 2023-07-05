@@ -1,17 +1,21 @@
 import pandas as p
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 data_juego = p.read_csv('juegos-ml.csv')
-# data_juego.values
-# data_juego.shape
-# data_juego.describe()
 X = data_juego.drop(columns=['juegos'])
 y = data_juego['juegos']
 
-modelo = DecisionTreeClassifier()
-modelo.fit(X.values,y)
+X_entrenar, X_prueba, y_entrenar, y_prueba = train_test_split(X.values, y, test_size=0.2)
 
-predicciones = modelo.predict([[14,0],[29,0],[30,0]])
+modelo = DecisionTreeClassifier()
+modelo.fit(X_entrenar,y_entrenar)
+
+# predicciones = modelo.predict([[14,0],[29,0],[30,0]])
+predicciones = modelo.predict(X_prueba)
+
+puntaje = accuracy_score(y_prueba, predicciones)
 
 print(predicciones)
-
+print(puntaje)
